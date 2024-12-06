@@ -12,6 +12,9 @@
 #include <moderngpu/kernel_sortedsearch.hxx>
 
 struct active_set_t {
+
+  int is_constructed() { return context != NULL; }
+
   int build(int _size, int CTA_NUM, int THD_NUM, QueueMode qmode) {
     context = new mgpu::standard_context_t(false);
     size = _size;
@@ -90,7 +93,7 @@ struct active_set_t {
     return Qproxy<Mode>::get_qsize(queue);
   }
 
-  mgpu::standard_context_t *context;
+  mgpu::standard_context_t *context = NULL;
   ASFmt fmt = Queue;
   size_t size;
   size_t size_cached;
